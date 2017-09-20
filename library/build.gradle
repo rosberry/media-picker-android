@@ -1,0 +1,48 @@
+apply plugin: 'com.android.library'
+apply plugin: 'com.novoda.bintray-release'
+apply plugin: 'maven'
+
+repositories {
+    mavenCentral()
+    maven {
+        url "http://nexus.rosberry.com:8081/nexus/content/repositories/releases/"
+    }
+    maven {
+        url "https://maven.google.com"
+    }
+
+}
+
+publish {
+    groupId = 'com.github.neestell'
+    artifactId = 'mediapicker'
+    publishVersion = '1.0.0'
+    desc = 'Library that helps a few lines of code to get media files(photos) from the android file system'
+    licences = ['Apache-2.0']
+    uploadName='MediaPicker'
+    website = 'https://github.com/rosberry/media-picker-android.git'
+}
+
+
+android {
+    compileSdkVersion 26
+    buildToolsVersion '26.0.1'
+
+    defaultConfig {
+        minSdkVersion 14
+        targetSdkVersion 26
+        versionCode 1
+        versionName "1.0.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+
+        }
+    }
+}
+
+dependencies {
+    compile 'com.android.support:support-core-utils:26.0.2'
+}
+

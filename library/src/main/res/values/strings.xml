@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">MediaPicker</string>
+    <string name="error_no_gallery_application">You have no gallery application to pick a photo</string>
+    <string name="error_no_camera_application">You have no camera application to take a photo</string>
+    <string name="error_cannot_take_image">Error taking a photo</string>
+    <string name="error_cannot_pick_image">Error pick a photo</string>
+    <string name="error_process_image">Error process a photo</string>
+    <string name="error_please_plug_sd_card">Please plug in SD-card or unplug USB wire </string>
+    <string name="error_no_mediapicker_params_specified">No MediaPicker params specified</string>
+
+</resources>
