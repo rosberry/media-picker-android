@@ -33,6 +33,8 @@ public final class PhotoUtils {
     };
 
     public static final String GOOGLE_CLOUD_URL = "content://com.google.android.apps.photos.content";
+    public static final String GALLERY_CLOUD_URL = "gallery3d.provider";
+
 
     public static PhotoOptions loadBoundFromCloud(Context context, Uri uri) {
         try {
@@ -151,7 +153,8 @@ public final class PhotoUtils {
                     new File(getRealPathFromURI(context, uri)));
             bitmap = BitmapFactory.decodeStream(is, null, options);
         } catch (FileNotFoundException e) {
-
+            e.printStackTrace();
+            return bitmap;
         } finally {
             closeStream(is);
         }
