@@ -45,7 +45,7 @@ final class MediaPhotoProcessor extends AsyncTaskLoader<String> {
     public String loadInBackground() {
         Uri uri = photoParams.getUri();
 
-        boolean googlePhoto = checkGooglePhoto(uri);
+        boolean remotePhoto = remotePhoto(uri);
 
         PhotoOptions originalPhotoOptions = null;
         Rect targetBounds = null;
@@ -55,7 +55,7 @@ final class MediaPhotoProcessor extends AsyncTaskLoader<String> {
         int originalRotation = PhotoUtils.getRotation(getContext(), uri,
                                                       PhotoUtils.getRealPathFromURI(getContext(), uri));
 
-        if (googlePhoto) {
+        if (remotePhoto) {
             originalPhotoOptions = PhotoUtils.loadBoundFromCloud(getContext(), uri);
         } else {
             originalPath = PhotoUtils.getRealPathFromURI(getContext(), uri);
@@ -81,7 +81,7 @@ final class MediaPhotoProcessor extends AsyncTaskLoader<String> {
 
         targetBitmap = PhotoUtils.decodeBitmap(getContext(),
                                                uri,
-                                               googlePhoto, originalPhotoOptions.getSize(),
+                                               remotePhoto, originalPhotoOptions.getSize(),
                                                photoParams.isRotate() ? originalRotation : 0,
                                                targetBounds.width(),
                                                targetBounds.height(),
@@ -137,7 +137,8 @@ final class MediaPhotoProcessor extends AsyncTaskLoader<String> {
         return externalPhoto;
     }
 
-    private boolean checkGooglePhoto(Uri uri) {
-        return uri.toString().startsWith(PhotoUtils.GOOGLE_CLOUD_URL);
+    private boolean remotePhoto(Uri uri) {
+        String path = uri.toString();
+        return path.startsWith(PhotoUtils.GOOGLE_CLOUD_URL) || path.contains(PhotoUtils.GALLERY_CLOUD_URL);
     }
 }

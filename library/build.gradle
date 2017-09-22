@@ -16,7 +16,7 @@ repositories {
 publish {
     groupId = 'com.github.neestell'
     artifactId = 'mediapicker'
-    publishVersion = '1.0.0'
+    publishVersion = '1.0.1'
     desc = 'Library that helps a few lines of code to get media files(photos) from the android file system'
     licences = ['Apache-2.0']
     uploadName='MediaPicker'
@@ -32,7 +32,7 @@ android {
         minSdkVersion 14
         targetSdkVersion 26
         versionCode 1
-        versionName "1.0.0"
+        versionName "1.0.1"
     }
     buildTypes {
         release {
