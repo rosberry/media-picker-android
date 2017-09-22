@@ -5,7 +5,7 @@ MediaPicker
 [![Size][size-img]][size-url]
 
 
-Library that helps a few lines of code to get media files(photos) from the android file system
+With a few lines of code you can get media files(photos) from your android file system
 
 Main goal of this library is to make photos choosing process as simple as possible and to make it
 easier for developers to integrate it into their apps. 
