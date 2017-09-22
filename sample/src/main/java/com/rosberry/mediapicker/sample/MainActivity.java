@@ -23,6 +23,9 @@ import com.rosberry.mediapicker.data.PhotoParams;
 
 public class MainActivity extends Activity implements View.OnClickListener, MediaPicker.OnMediaListener {
 
+    public static final int REQUEST_CODE_GALLERY = 123;
+    public static final int REQUEST_CODE_CAMERA = 124;
+
     ImageView contentImageView;
     ProgressBar progressBar;
 
@@ -60,22 +63,21 @@ public class MainActivity extends Activity implements View.OnClickListener, Medi
 
     }
 
-
     @Override
     public void onClick(View view) {
-        if (checkPermissions(REQUEST_CODE_READ_WRITE_EXTERNAL_STORAGE,
-                             Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                             Manifest.permission.READ_EXTERNAL_STORAGE))
+
+
 
             switch (view.getId()) {
                 case R.id.button_pick_gallery:
+                    if (checkPermissions(REQUEST_CODE_GALLERY, Manifest.permission.WRITE_EXTERNAL_STORAGE))
+
                     mediaPicker.with(photoParamsOptimized).pick();
                     break;
                 case R.id.button_pick_camera:
-                    if (checkPermissions(REQUEST_CODE_CAMERA, Manifest.permission.CAMERA)){
-                        mediaPicker.with(photoParamsOptimized).take();
+                    if (checkPermissions(REQUEST_CODE_CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE))
 
-                    }
+                    mediaPicker.with(photoParamsOptimized).take();
                     break;
             }
     }
@@ -95,16 +97,12 @@ public class MainActivity extends Activity implements View.OnClickListener, Medi
     public void onPickMediaResult(@NonNull MediaResult result, @Nullable CharSequence errorMsg) {
         Toast.makeText(this, "Media path: " + result.getPath(), Toast.LENGTH_SHORT).show();
 
-
         if (errorMsg == null) {
             contentImageView.setImageBitmap(BitmapFactory.decodeFile(result.getPath()));
         } else {
             Toast.makeText(this, errorMsg, Toast.LENGTH_SHORT).show();
         }
     }
-
-    public static final int REQUEST_CODE_READ_WRITE_EXTERNAL_STORAGE = 123;
-    public static final int REQUEST_CODE_CAMERA = 124;
 
     public boolean checkPermissions(int requestCode, String... permissions) {
         if (Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
@@ -128,7 +126,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Medi
     public void onRequestPermissionsResult(int requestCode,
                                            String[] permissions, int[] grantResults) {
         switch (requestCode) {
-            case REQUEST_CODE_READ_WRITE_EXTERNAL_STORAGE:
+            case REQUEST_CODE_GALLERY:
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     mediaPicker.with(photoParamsOptimized).pick();
                 } else {

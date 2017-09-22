@@ -30,7 +30,7 @@ Note: min SDK version for library is 14
 
 #### License ####
 
-    Copyright 2014 Rosberry
+    Copyright 2017 Rosberry
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
