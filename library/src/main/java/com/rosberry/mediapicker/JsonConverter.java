@@ -70,7 +70,7 @@ final class JsonConverter {
         boolean highQuality = jsonObject.optBoolean("highQuality", true);
         boolean facingCamera = jsonObject.optBoolean("facingCamera", false);
         long duration = jsonObject.optLong("duration", 2);
-        MediaPicker.Type type = MediaPicker.Type.valueOf(jsonObject.optString("type"));
+        MediaPicker.Type type = MediaPicker.Type.valueOf(jsonObject.optString("type", MediaPicker.Type.IMAGE.name()));
 
         Bitmap.Config pixelFormat = Bitmap.Config.values()[jsonObject.optInt("pixelFormat", 1)];
         Uri bufferedUri = Uri.parse(jsonObject.optString("bufferedUri", ""));
