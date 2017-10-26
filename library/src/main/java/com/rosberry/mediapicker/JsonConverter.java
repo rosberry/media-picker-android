@@ -29,6 +29,11 @@ final class JsonConverter {
             jsonObject.put("bufferedUri", params.getBufferedUri().toString());
             jsonObject.put("dir", params.getDir());
 
+            jsonObject.put("highQuality", params.isHighQuality());
+            jsonObject.put("facingCamera", params.isFacingCamera());
+            jsonObject.put("duration", params.getDuration());
+            jsonObject.put("type", params.getType().toString());
+
             jsonObject.put("noGallery", params.getNoGalleryMsg());
             jsonObject.put("noCamera", params.getNoCameraMsg());
             jsonObject.put("takePhotoError", params.getTakePhotoErrorMsg());
@@ -62,6 +67,11 @@ final class JsonConverter {
         boolean mutable = jsonObject.optBoolean("mutable", true);
         boolean rotate = jsonObject.optBoolean("rotate", false);
 
+        boolean highQuality = jsonObject.optBoolean("highQuality", true);
+        boolean facingCamera = jsonObject.optBoolean("facingCamera", false);
+        long duration = jsonObject.optLong("duration", 2);
+        MediaPicker.Type type = MediaPicker.Type.valueOf(jsonObject.optString("type"));
+
         Bitmap.Config pixelFormat = Bitmap.Config.values()[jsonObject.optInt("pixelFormat", 1)];
         Uri bufferedUri = Uri.parse(jsonObject.optString("bufferedUri", ""));
         String dir = jsonObject.optString("dir", "");
@@ -72,6 +82,7 @@ final class JsonConverter {
 
         return new PhotoParams.Builder()
                 .id(id)
+                .type(type)
                 .adjustTextureSize(adjustTextureSize)
                 .rotate(rotate)
                 .compression(compression)
@@ -80,6 +91,11 @@ final class JsonConverter {
                 .mutable(mutable)
                 .uri(bufferedUri)
                 .dir(dir)
+
+                .duration(duration)
+                .facing(facingCamera)
+                .highQuality(highQuality)
+
                 .noGalleryError(noGallery)
                 .noCameraError(noCamera)
                 .takePhotoError(takePhotoError)

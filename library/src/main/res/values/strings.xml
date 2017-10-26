@@ -7,5 +7,6 @@
     <string name="error_process_image">Error process a photo</string>
     <string name="error_please_plug_sd_card">Please plug in SD-card or unplug USB wire </string>
     <string name="error_no_mediapicker_params_specified">No MediaPicker params specified</string>
+    <string name="error_no_mediapicker_type_specified">No MediaPicker media type specified</string>
 
 </resources>

@@ -12,6 +12,7 @@ import android.media.ExifInterface;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.rosberry.mediapicker.data.PhotoOptions;
 
@@ -21,12 +22,15 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
 
 /**
  * Created by dmitry on 30.08.17.
  */
 
 public final class PhotoUtils {
+    public static final String[] MIMES = new String[]{"jpg", "jpeg", "JPG", "JPEG"};
+
 
     private static final String[] CONTENT_ORIENTATION = new String[]{
             MediaStore.Images.ImageColumns.ORIENTATION
@@ -54,11 +58,15 @@ public final class PhotoUtils {
 
     private static String parseType(BitmapFactory.Options options) {
         String type = options.outMimeType;
+
+        return parseType(type);
+    }
+    static String parseType(String type) {
         if (type != null && type.contains("/")) {
             return type.substring(type.indexOf("/") + 1);
-        }
+        }else return type;
 
-        return "";
+
     }
 
     public static PhotoOptions getBitmapBounds(String path) {

@@ -23,6 +23,7 @@ import com.rosberry.mediapicker.app.ApplicationPicker;
 import com.rosberry.mediapicker.app.CameraPicker;
 import com.rosberry.mediapicker.app.GalleryPicker;
 import com.rosberry.mediapicker.util.PhotoUtils;
+import com.rosberry.mediapicker.util.VideoUtils;
 
 import java.io.File;
 
@@ -31,13 +32,16 @@ import java.io.File;
  */
 
 public final class MediaPicker implements LoaderManager.LoaderCallbacks<String> {
-
+    public enum Type{
+        IMAGE, VIDEO
+    }
     private Context context;
     private Handler handler;
     private SharedPreferences preferences;
     private LoaderManager loaderManager;
 
     private PhotoParams photoParams;
+
     private MediaResult noResult;
     private static MediaResult generalResult;
 
@@ -47,6 +51,7 @@ public final class MediaPicker implements LoaderManager.LoaderCallbacks<String> 
     private static final String PHOTO_PARAMS_KEY = "media_picker_photo_params";
 
     public static final long DELAY_SCAN_RESULT = 500;
+
 
     private MediaPicker(Context context, LoaderManager loaderManager) {
         this.context = context;
@@ -123,7 +128,12 @@ public final class MediaPicker implements LoaderManager.LoaderCallbacks<String> 
     }
 
     private void chooseApplication(int requestCode) {
-        if (photoParams != null) {
+        String errorMsg = null;
+        if (photoParams == null) errorMsg =  context.getString(R.string.error_no_mediapicker_params_specified);
+        else if (photoParams.getType() == null) errorMsg = context.getString(R.string.error_no_mediapicker_type_specified);
+
+        if (errorMsg == null) {
+
             generalResult = new MediaResult(photoParams.getId(), requestCode);
 
             ApplicationPicker applicationPicker = PickFactory.getInstance(requestCode);
@@ -131,7 +141,10 @@ public final class MediaPicker implements LoaderManager.LoaderCallbacks<String> 
 
             Uri uri = applicationPicker.start((Activity) context, generalResult, photoParams);
             photoParams.setBufferedUri(uri);
-            File dir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+            File dir = context.getExternalFilesDir(photoParams
+                                                           .getType()
+                                                           .equals(Type.IMAGE) ?
+                                                           Environment.DIRECTORY_PICTURES : Environment.DIRECTORY_MOVIES);
             if (dir != null) {
                 dir.mkdirs();
                 photoParams.setDir(dir.getPath());
@@ -142,8 +155,7 @@ public final class MediaPicker implements LoaderManager.LoaderCallbacks<String> 
                     .apply();
 
         } else {
-            generalListener.onPickMediaResult(noResult,
-                                              context.getString(R.string.error_no_mediapicker_params_specified));
+            generalListener.onPickMediaResult(noResult, errorMsg);
         }
     }
 
@@ -188,12 +200,12 @@ public final class MediaPicker implements LoaderManager.LoaderCallbacks<String> 
 
                     scanGallery(uri);
                 else
-                    onPhotoUriAvailable(uri, null);
+                    onMediaUriAvailable(uri, null);
             }
 
         }
 
-        public void onPhotoUriAvailable(Uri uri, String path) {
+        public void onMediaUriAvailable(Uri uri, String path) {
             if (uri == null && path == null)
                 generalListener.onPickMediaResult(generalResult, photoParams.getPickGalleryErrorMsg());
             else {
@@ -202,12 +214,21 @@ public final class MediaPicker implements LoaderManager.LoaderCallbacks<String> 
                 } else
                     photoParams.setUri(Uri.parse(path));
 
-                loaderManager.initLoader(0, null, MediaPicker.this);
+                int loaderId = -1;
+                switch (photoParams.getType()){
+                    case IMAGE: loaderId = 0; break;
+                    case VIDEO: loaderId = 1; break;
+
+                }
+                loaderManager.initLoader(loaderId, null, MediaPicker.this);
             }
         }
 
         private void scanGallery(Uri uri) {
             String path = null;
+
+            final String[] mimeTypes = photoParams.getType().equals(Type.VIDEO) ? VideoUtils.MIMES : PhotoUtils.MIMES;
+
             if (uri.toString().contains(ApplicationPicker.EXTERNAL_PATH)) {
                 path = uri.getPath().substring(uri.getPath().indexOf(
                         ApplicationPicker.EXTERNAL_PATH) + ApplicationPicker.EXTERNAL_PATH.length());
@@ -217,11 +238,11 @@ public final class MediaPicker implements LoaderManager.LoaderCallbacks<String> 
 
             MediaScannerConnection.scanFile(context, new String[]{new File(Environment.getExternalStorageDirectory(),
                                                                            path).getPath()},
-                                            new String[]{"jpg", "jpeg", "JPG", "JPEG"},
+                                           mimeTypes,
                                             new MediaScannerConnection.OnScanCompletedListener() {
 
                                                 public void onScanCompleted(String path, Uri uri) {
-                                                    onPhotoUriAvailable(uri, path);
+                                                    onMediaUriAvailable(uri, path);
                                                 }
 
                                             });
@@ -231,8 +252,12 @@ public final class MediaPicker implements LoaderManager.LoaderCallbacks<String> 
 
     @Override
     public Loader<String> onCreateLoader(int id, Bundle args) {
+        switch (id){
+            case 0: return new MediaPhotoProcessor(context, photoParams);
+            case 1: return new MediaVideoProcessor(context, photoParams);
+        }
 
-        return new MediaPhotoProcessor(context, photoParams);
+        return null;
     }
 
     @Override

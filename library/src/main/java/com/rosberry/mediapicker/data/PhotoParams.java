@@ -4,6 +4,8 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.annotation.IntRange;
 
+import com.rosberry.mediapicker.MediaPicker;
+
 /**
  * Created by dmitry on 29.08.17.
  */
@@ -13,6 +15,7 @@ public class PhotoParams {
     public static final int HIGH_IMAGE_QUALITY_SIZE = 4096;
     public static final int LOW_IMAGE_QUALITY_SIZE = 2048;
 
+    //photo
     private int id;
     private int maxSize;
     private int compression;
@@ -21,6 +24,14 @@ public class PhotoParams {
     private boolean mutable;
 
     private Bitmap.Config pixelFormat;
+
+    //video
+    private boolean highQuality;
+    private boolean facingCamera;
+    private long duration;
+
+    //general
+    private MediaPicker.Type type;
 
     private String uri;
     private String bufferedUri;
@@ -106,12 +117,52 @@ public class PhotoParams {
         return Uri.parse(bufferedUri == null ? "" : bufferedUri);
     }
 
+    public boolean isHighQuality() {
+        return highQuality;
+    }
+
+    public boolean isFacingCamera() {
+        return facingCamera;
+    }
+
+    public long getDuration() {
+        return duration;
+    }
+
+    public MediaPicker.Type getType() {
+        return type;
+    }
+
     public static class Builder {
 
         private PhotoParams params = new PhotoParams();
 
         public Builder id(int id) {
             params.id = id;
+
+            return this;
+        }
+
+        public Builder type(MediaPicker.Type type) {
+            params.type = type;
+
+            return this;
+        }
+
+        public Builder duration(long duration) {
+            params.duration = duration;
+
+            return this;
+        }
+
+        public Builder facing(boolean facing) {
+            params.facingCamera = facing;
+
+            return this;
+        }
+
+        public Builder highQuality(boolean b) {
+            params.highQuality = b;
 
             return this;
         }

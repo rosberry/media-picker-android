@@ -1,54 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
-
-    <LinearLayout
-        android:id="@+id/buttons_container"
+    <RadioGroup
+        android:id="@+id/radio_group_mode"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center|top"
-        android:paddingTop="50dp"
-        tools:context="com.rosberry.mediapicker.sample.MainActivity">
-
-        <ImageButton
-            android:id="@+id/button_pick_gallery"
+        android:orientation="horizontal"
+        >
+        <RadioButton
+            android:id="@+id/radio_photo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="16dp"
-            android:src="@android:drawable/ic_menu_gallery"
+            android:text="Photo"
+            android:checked="true"
             />
-
-        <ImageButton
-            android:id="@+id/button_pick_camera"
+        <RadioButton
+            android:id="@+id/radio_video"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:src="@android:drawable/ic_menu_camera"
+            android:text="Video"
             />
-    </LinearLayout>
 
-    <ImageView
-        android:id="@+id/image_content"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_below="@+id/buttons_container"
-        android:adjustViewBounds="true"
-        android:minHeight="300dp"
-        android:scaleType="centerInside"
-        />
+    </RadioGroup>
+    <FrameLayout
 
-    <ProgressBar
-        android:id="@+id/progress_circle"
-        style="@style/Base.Widget.AppCompat.ProgressBar"
+        android:id="@+id/content_view"
+        android:layout_below="@+id/radio_group_mode"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:layout_alignTop="@+id/image_content"
+        android:layout_height="match_parent"
 
         />
 </RelativeLayout>

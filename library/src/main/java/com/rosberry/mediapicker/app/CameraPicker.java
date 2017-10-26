@@ -4,11 +4,13 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.hardware.Camera;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
 import android.util.Log;
 
+import com.rosberry.mediapicker.MediaPicker;
 import com.rosberry.mediapicker.util.FeatureUtils;
 import com.rosberry.mediapicker.data.MediaResult;
 import com.rosberry.mediapicker.data.PhotoParams;
@@ -26,17 +28,33 @@ public class CameraPicker extends ApplicationPicker {
 
     public CameraPicker() {
         super();
-        intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
     }
 
     @Override
     public Uri start(Activity activity, MediaResult mediaResult, PhotoParams photoParams) {
         Log.d(getClass().getName(), "pick camera");
 
+
+        if (photoParams.getType().equals(MediaPicker.Type.IMAGE)){
+
+            intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
+
+        }else if (photoParams.getType().equals(MediaPicker.Type.VIDEO)){
+
+            intent.setAction(MediaStore.ACTION_VIDEO_CAPTURE);
+            intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, photoParams.isHighQuality() ? 1 : 0);
+            intent.putExtra(MediaStore.EXTRA_SIZE_LIMIT, photoParams.getMaxSize());
+            intent.putExtra("android.intent.extras.CAMERA_FACING", photoParams.isFacingCamera()
+                    ? Camera.CameraInfo.CAMERA_FACING_FRONT : Camera.CameraInfo.CAMERA_FACING_BACK);
+            intent.putExtra(MediaStore.EXTRA_DURATION_LIMIT, photoParams.getDuration());
+
+        }
+
         if (hasPicker(activity)) {
             if (FeatureUtils.isSdAvailable()) {
-                Uri externalUri = createExternalUri(activity.getApplicationContext());
+                Uri externalUri = createExternalUri(activity.getApplicationContext(), getExternalMediaType(photoParams));
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, externalUri);
+
 
                 grantReadWritePermission(activity, externalUri);
                 activity.startActivityForResult(intent, mediaResult.getRequestCode());
