@@ -176,8 +176,8 @@ public final class PhotoUtils {
                 Matrix m = new Matrix();
                 m.setScale(scale, scale);
                 m.postRotate(rotation);
-                Bitmap transformed = Bitmap.createBitmap(bitmap, 0, 0, (int) ((bitmap.getWidth()) * scale),
-                                                         (int) ((bitmap.getHeight()) * scale), m, true);
+                Bitmap transformed = Bitmap.createBitmap(bitmap, 0, 0, (int) ((bitmap.getWidth())),
+                                                         (int) ((bitmap.getHeight()) ), m, true);
                 if (bitmap != transformed)
                     bitmap.recycle();
 

@@ -14,7 +14,7 @@ import com.rosberry.mediapicker.data.PhotoOptions;
  */
 
 public final class VideoUtils {
-    public static final String[] MIMES = new String[]{"mp4", "mpeg","mpeg4", "m4v", "mkv", "webm", "avi", "3gp", "gif"};
+    public static final String[] MIMES = new String[]{"mp4", "mpeg","mpeg4", "m4v", "mkv", "webm", "avi", "3gp"};
 
     public static PhotoOptions getVideoOptions(Context context, Uri uri) {
         String type = PhotoUtils.parseType(context.getContentResolver().getType(uri));

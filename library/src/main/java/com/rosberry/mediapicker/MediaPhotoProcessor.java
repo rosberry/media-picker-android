@@ -16,6 +16,8 @@ import com.rosberry.mediapicker.util.FileUtils;
 import com.rosberry.mediapicker.util.PhotoUtils;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.Locale;
 
 /**
@@ -66,39 +68,51 @@ final class MediaPhotoProcessor extends AsyncTaskLoader<String> {
         }
         targetBounds = new Rect(originalPhotoOptions.getSize());
 
-        if (photoParams.isMutable()) {
-            if (photoParams.getMaxSize() != Integer.MAX_VALUE) {
-                if (Math.max(targetBounds.width(), targetBounds.height()) > photoParams.getMaxSize()) {
-                    targetBounds = PhotoUtils.createCompatibleBounds(targetBounds, photoParams.getMaxSize());
-                }
-            }
-            if (photoParams.isAdjustTextureSize()) {
-                targetBounds = PhotoUtils.createCompatibleBounds(targetBounds,
-                                                                 PhotoParams.HIGH_IMAGE_QUALITY_SIZE,
-                                                                 PhotoParams.LOW_IMAGE_QUALITY_SIZE);
-            }
-        }
-
-        targetBitmap = PhotoUtils.decodeBitmap(getContext(),
-                                               uri,
-                                               remotePhoto, originalPhotoOptions.getSize(),
-                                               photoParams.isRotate() ? originalRotation : 0,
-                                               targetBounds.width(),
-                                               targetBounds.height(),
-                                               photoParams.getPixelFormat());
-
         File externalPhoto = getExternalPhoto();
 
         File cachedPhoto = new File(photoParams.getDir(), externalPhoto.getName()
                 + String.format(Locale.US, ".%s", originalPhotoOptions.getType()));
+        boolean photoSuccessfullySaved = false;
 
-        boolean success = FileUtils.bitmapToFile(targetBitmap, cachedPhoto.getPath(),
-                                                 photoParams.getCompression(), getCompressType(originalPhotoOptions));
+        if (!"gif".equals(originalPhotoOptions.getType())) {
+            if (photoParams.isMutable()) {
+                if (photoParams.getMaxSize() != Integer.MAX_VALUE) {
+                    if (Math.max(targetBounds.width(), targetBounds.height()) > photoParams.getMaxSize()) {
+                        targetBounds = PhotoUtils.createCompatibleBounds(targetBounds, photoParams.getMaxSize());
+                    }
+                }
+                if (photoParams.isAdjustTextureSize()) {
+                    targetBounds = PhotoUtils.createCompatibleBounds(targetBounds,
+                                                                     PhotoParams.HIGH_IMAGE_QUALITY_SIZE,
+                                                                     PhotoParams.LOW_IMAGE_QUALITY_SIZE);
+                }
+            }
+
+            targetBitmap = PhotoUtils.decodeBitmap(getContext(),
+                                                   uri,
+                                                   remotePhoto, originalPhotoOptions.getSize(),
+                                                   photoParams.isRotate() ? originalRotation : 0,
+                                                   targetBounds.width(),
+                                                   targetBounds.height(),
+                                                   photoParams.getPixelFormat());
+
+
+
+           photoSuccessfullySaved = FileUtils.bitmapToFile(targetBitmap,     cachedPhoto.getPath(),
+                                                     photoParams.getCompression(),
+                                                     getCompressType(originalPhotoOptions));
+        }else {
+            try {
+                FileUtils.copy(new FileInputStream(new File(PhotoUtils.getRealPathFromURI(getContext(), uri))), cachedPhoto);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
 
         if (!externalPhoto.getParent().equals(cachedPhoto.getParent()))
             externalPhoto.delete();
 
-        if (success) {
+        if (photoSuccessfullySaved) {
             if (!photoParams.isRotate())
                 ExifUtils.setExifOrientation(cachedPhoto.getPath(), originalRotation);
 
