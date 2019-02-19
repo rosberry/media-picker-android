@@ -5,6 +5,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Environment;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 
 import com.rosberry.mediapicker.app.ApplicationPicker;
 import com.rosberry.mediapicker.data.PhotoOptions;
@@ -49,7 +50,19 @@ final class MediaVideoProcessor extends AsyncTaskLoader<String> {
         String originalPath = null;
         PhotoOptions originalPhotoOptions = VideoUtils.getVideoOptions(getContext(), uri);
 
-        File externalVideo = getExternalVideo();
+        File externalVideo = null;
+
+        try{
+            externalVideo = getExternalVideo();
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            if (externalVideo == null){
+                String realFilePath = PhotoUtils.getRealPathFromURI(getContext(), uri);
+                externalVideo = new File(!TextUtils.isEmpty(realFilePath) ? realFilePath : uri.getPath());
+            }
+        }
+
         File cachedPhoto = new File(photoParams.getDir(), externalVideo.getName()
                 + String.format(Locale.US, ".%s", originalPhotoOptions.getType()));
 
@@ -72,6 +85,7 @@ final class MediaVideoProcessor extends AsyncTaskLoader<String> {
             boolean hasExtension;
 
             hasExtension = VideoUtils.isVideo(originalPath);
+
             if (!hasExtension) {
                 new File(originalPath).renameTo(cachedPhoto);
                 originalPath = cachedPhoto.getPath();

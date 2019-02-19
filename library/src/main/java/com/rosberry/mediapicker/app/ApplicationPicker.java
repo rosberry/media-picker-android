@@ -47,9 +47,16 @@ public abstract class ApplicationPicker {
         Uri targetUri = null;
 
         File dir = ctx.getExternalFilesDir(type);
+        boolean externalExists = true;
+        if (dir == null){
+            dir = new File("Android/data/"+ctx.getPackageName()+"/files/" + type);
+            dir.mkdirs();
+            externalExists = false;
+        }
+
         File photoFile = new File(dir, getFileName());
 
-        targetUri = FileProvider.getUriForFile(ctx, ctx.getPackageName() + ".provider", photoFile);
+        targetUri = externalExists ? FileProvider.getUriForFile(ctx, ctx.getPackageName() + ".provider", photoFile) : Uri.fromFile(photoFile);
 
         return targetUri;
     }
