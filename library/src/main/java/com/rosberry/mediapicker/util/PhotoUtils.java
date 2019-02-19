@@ -38,7 +38,8 @@ public final class PhotoUtils {
 
     public static final String GOOGLE_CLOUD_URL = "content://com.google.android.apps.photos.content";
     public static final String GALLERY_CLOUD_URL = "gallery3d.provider";
-
+    public static final String GOOGLE_DOCS_STORAGE_URL = "com.google.android.apps.docs.storage";
+    public static final String DROPBOX_CACHE = "com.dropbox.android.FileCache";
 
     public static PhotoOptions loadBoundFromCloud(Context context, Uri uri) {
         try {

@@ -105,7 +105,7 @@ final class MediaVideoProcessor extends AsyncTaskLoader<String> {
 
         return path.startsWith(PhotoUtils.GOOGLE_CLOUD_URL)
                 || path.contains(PhotoUtils.GALLERY_CLOUD_URL)
-                || uri.getAuthority().equals("com.google.android.apps.docs.storage")
-                || uri.getAuthority().equals("com.dropbox.android.FileCache");
+                || PhotoUtils.GOOGLE_DOCS_STORAGE_URL.equals(uri.getAuthority())
+                || PhotoUtils.DROPBOX_CACHE.equals(uri.getAuthority());
     }
 }
