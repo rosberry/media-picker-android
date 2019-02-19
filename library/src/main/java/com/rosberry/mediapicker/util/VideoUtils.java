@@ -18,6 +18,9 @@ public final class VideoUtils {
 
     public static PhotoOptions getVideoOptions(Context context, Uri uri) {
         String type = PhotoUtils.parseType(context.getContentResolver().getType(uri));
+        if (type == null && uri != null){
+            type = uri.getPath().substring(uri.getPath().lastIndexOf(".") + 1);
+        }
         MediaMetadataRetriever metaRetriever = new MediaMetadataRetriever();
 
         try {
