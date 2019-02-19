@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+    >
+
+    <LinearLayout
+        android:id="@+id/video_buttons_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center|top"
+        android:paddingTop="50dp"
+        >
+
+        <ImageButton
+            android:id="@+id/button_video_pick_gallery"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="16dp"
+            android:src="@android:drawable/ic_menu_gallery"
+            />
+
+        <ImageButton
+            android:id="@+id/button_video_pick_camera"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:src="@android:drawable/ic_menu_camera"
+            />
+    </LinearLayout>
+
+    <VideoView
+        android:id="@+id/video_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/video_buttons_container"
+        android:adjustViewBounds="true"
+        android:minHeight="300dp"
+        android:scaleType="centerInside"
+        />
+
+    <ProgressBar
+        android:id="@+id/progress_circle"
+        style="@style/Base.Widget.AppCompat.ProgressBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_alignTop="@+id/video_content"
+
+        />
+</RelativeLayout>

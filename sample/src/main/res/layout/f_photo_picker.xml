@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                tools:showIn="@layout/activity_main"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+    >
+
+    <LinearLayout
+        android:id="@+id/photo_buttons_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center|top"
+        android:paddingTop="50dp"
+        tools:context="com.rosberry.mediapicker.sample.MainActivity">
+
+        <ImageButton
+            android:id="@+id/button_photo_pick_gallery"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="16dp"
+            android:src="@android:drawable/ic_menu_gallery"
+            />
+
+        <ImageButton
+            android:id="@+id/button_photo_pick_camera"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:src="@android:drawable/ic_menu_camera"
+            />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/image_photo_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/photo_buttons_container"
+        android:adjustViewBounds="true"
+        android:minHeight="300dp"
+        android:scaleType="centerInside"
+        />
+
+    <ProgressBar
+        android:id="@+id/progress_circle"
+        style="@style/Base.Widget.AppCompat.ProgressBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_alignTop="@+id/image_photo_content"
+
+        />
+</RelativeLayout>

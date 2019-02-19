@@ -6,20 +6,17 @@ import android.graphics.Rect;
  * Created by dmitry on 19.09.17.
  */
 
-public class PhotoOptions {
+public class PhotoOptions extends MediaOptions{
     private Rect size;
-    private String type;
 
     public PhotoOptions(Rect size, String type) {
+        super(type);
         this.size = size;
-        this.type = type;
+
     }
 
     public Rect getSize() {
         return size;
     }
 
-    public String getType() {
-        return type;
-    }
 }

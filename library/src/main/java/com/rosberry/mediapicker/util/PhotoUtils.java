@@ -12,6 +12,7 @@ import android.media.ExifInterface;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.rosberry.mediapicker.data.PhotoOptions;
 
@@ -21,12 +22,15 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
 
 /**
  * Created by dmitry on 30.08.17.
  */
 
 public final class PhotoUtils {
+    public static final String[] MIMES = new String[]{"jpg", "jpeg", "JPG", "JPEG"};
+
 
     private static final String[] CONTENT_ORIENTATION = new String[]{
             MediaStore.Images.ImageColumns.ORIENTATION
@@ -34,7 +38,8 @@ public final class PhotoUtils {
 
     public static final String GOOGLE_CLOUD_URL = "content://com.google.android.apps.photos.content";
     public static final String GALLERY_CLOUD_URL = "gallery3d.provider";
-
+    public static final String GOOGLE_DOCS_STORAGE_URL = "com.google.android.apps.docs.storage";
+    public static final String DROPBOX_CACHE = "com.dropbox.android.FileCache";
 
     public static PhotoOptions loadBoundFromCloud(Context context, Uri uri) {
         try {
@@ -54,11 +59,15 @@ public final class PhotoUtils {
 
     private static String parseType(BitmapFactory.Options options) {
         String type = options.outMimeType;
+
+        return parseType(type);
+    }
+    static String parseType(String type) {
         if (type != null && type.contains("/")) {
             return type.substring(type.indexOf("/") + 1);
-        }
+        }else return type;
 
-        return "";
+
     }
 
     public static PhotoOptions getBitmapBounds(String path) {
@@ -168,8 +177,8 @@ public final class PhotoUtils {
                 Matrix m = new Matrix();
                 m.setScale(scale, scale);
                 m.postRotate(rotation);
-                Bitmap transformed = Bitmap.createBitmap(bitmap, 0, 0, (int) ((bitmap.getWidth()) * scale),
-                                                         (int) ((bitmap.getHeight()) * scale), m, true);
+                Bitmap transformed = Bitmap.createBitmap(bitmap, 0, 0, (int) ((bitmap.getWidth())),
+                                                         (int) ((bitmap.getHeight()) ), m, true);
                 if (bitmap != transformed)
                     bitmap.recycle();
 

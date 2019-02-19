@@ -1,53 +1,36 @@
-# MediaPicker
+MediaPicker
+============
 
 [![Platform](https://img.shields.io/badge/platform-android-lightgrey.svg)](https://www.android.com/)
 [![Download](https://api.bintray.com/packages/neestell/maven/MediaPicker/images/download.svg) ](https://bintray.com/neestell/maven/MediaPicker/_latestVersion)
 [![Size][size-img]][size-url]
 
 
-With a few lines of code you can get media files(photos) from your android file system
+Library that helps a few lines of code to get media files(photos) from the android file system
 
 Main goal of this library is to make photos choosing process as simple as possible and to make it
 easier for developers to integrate it into their apps. 
 
-## Features 
+#### Features ####
 
 - Pick photos from Camera, Gallery and Cloud
-- Support JPEG, PNG, WEBP
+- Support image formats: JPEG, PNG, WEBP, GIF
+- Support video formats: mp4, mpeg, mpeg4, m4v, mkv, webm, avi, 3gp
 - Set up target photo parameters(rotation, size, compression and quality)
 
-## Requirements
-- Android SDK 14+
-- Java 1.6+ 
-- Android Studio, IntelliJ Idea
-
-## Setup
+#### Usage ####
 
 Add dependency to your `build.gradle` file:
 
-```groovy
-    compile 'com.github.neestell:mediapicker:1.0.1'
-```
-and see usage
+    compile 'com.github.neestell:mediapicker:1.2.1'
+
+Note: min SDK version for library is 14
 
 [Usage wiki](https://github.com/rosberry/media-picker-android/wiki/Usage)
 
 [Sample app sources](https://github.com/rosberry/media-picker-android/tree/master/sample)
 
-
-## Authors
-
-* Dmitry Rabetsky, dmitriy.rabetskiy@rosberry.com
-
-## About
-
-<img src="https://github.com/rosberry/Foundation/blob/master/Assets/full_logo.png?raw=true" height="100" />
-
-This project is owned and maintained by [Rosberry](http://rosberry.com). We build mobile apps for users worldwide 🌏.
-
-Check out our [open source projects](https://github.com/rosberry), read [our blog](https://medium.com/@Rosberry) or give us a high-five on 🐦 [@rosberryapps](http://twitter.com/RosberryApps).
-
-## License
+#### License ####
 
     Copyright 2017 Rosberry
 
@@ -63,5 +46,5 @@ Check out our [open source projects](https://github.com/rosberry), read [our blo
     See the License for the specific language governing permissions and
     limitations under the License.
 
-[size-url]: http://www.methodscount.com/?lib=com.github.rosberry%3Amediapicker%3A1.0.1
+[size-url]: http://www.methodscount.com/?lib=com.github.rosberry%3Amediapicker%3A1.2.1
 [size-img]: https://img.shields.io/badge/Methods%20and%20size-158%20%7C%2033%20KB-e91e63.svg?style=flat-square
