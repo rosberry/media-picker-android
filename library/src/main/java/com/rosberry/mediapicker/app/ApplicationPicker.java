@@ -49,7 +49,7 @@ public abstract class ApplicationPicker {
         File dir = ctx.getExternalFilesDir(type);
         boolean externalExists = true;
         if (dir == null){
-            dir = new File("Android/data/"+ctx.getPackageName()+"/files/" + type);
+            dir = new File("/Android/data/"+ctx.getPackageName()+"/files/" + type);
             dir.mkdirs();
             externalExists = false;
         }
