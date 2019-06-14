@@ -22,7 +22,7 @@ easier for developers to integrate it into their apps.
 
 Add dependency to your `build.gradle` file:
 
-    compile 'com.github.neestell:mediapicker:1.2.1'
+    compile 'com.github.neestell:mediapicker:1.2.2'
 
 Note: min SDK version for library is 14
 
@@ -46,5 +46,5 @@ Note: min SDK version for library is 14
     See the License for the specific language governing permissions and
     limitations under the License.
 
-[size-url]: http://www.methodscount.com/?lib=com.github.rosberry%3Amediapicker%3A1.2.1
+[size-url]: http://www.methodscount.com/?lib=com.github.rosberry%3Amediapicker%3A1.2.2
 [size-img]: https://img.shields.io/badge/Methods%20and%20size-158%20%7C%2033%20KB-e91e63.svg?style=flat-square
