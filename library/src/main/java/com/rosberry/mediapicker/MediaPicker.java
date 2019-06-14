@@ -141,10 +141,13 @@ public final class MediaPicker implements LoaderManager.LoaderCallbacks<String> 
 
             Uri uri = applicationPicker.start((Activity) context, generalResult, photoParams);
             photoParams.setBufferedUri(uri);
-            File dir = context.getExternalFilesDir(photoParams
-                                                           .getType()
-                                                           .equals(Type.IMAGE) ?
-                                                           Environment.DIRECTORY_PICTURES : Environment.DIRECTORY_MOVIES);
+            String type = photoParams
+                    .getType()
+                    .equals(Type.IMAGE) ?
+                    Environment.DIRECTORY_PICTURES : Environment.DIRECTORY_MOVIES;
+
+            File dir = context.getExternalFilesDir(type);
+
             if (dir != null) {
                 dir.mkdirs();
                 photoParams.setDir(dir.getPath());
